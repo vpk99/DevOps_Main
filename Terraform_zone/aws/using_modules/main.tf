@@ -69,3 +69,23 @@ module "db_security_group" {
   }
 
 }
+
+# Creating a ec2 instance 
+
+module "instances" {
+  source = "github.com/vpk99/DevOps_Main/Terraform_zone/aws/modules/ec2"
+instance_info = {
+  name = "web"
+  size = "t2.micro"
+  ami = "ami-04b70fa74e45c3917"
+  subnet_id = module.vpc.public_subnets[0].id
+  security_group_id = module.aws_security_group.security_group_id
+  key_name = "my_idrsa"
+  user_data = true
+  user_data_file = "install.sh"
+  associate_public_ip_address = true
+  type = "t2.micro"
+}
+
+}
+
