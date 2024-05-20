@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "../modules/vpc"
+  source = "github.com/vpk99/DevOps_Main/Terraform_zone/aws/modules/vpc"
 
   network_info = {
     name = "primary-network"
@@ -25,7 +25,7 @@ module "vpc" {
 # Creating security group using module
 
 module "aws_security_group" {
-  source = "../modules/security_group"
+  source = "github.com/vpk99/DevOps_Main/Terraform_zone/aws/modules/security_group"
   security_group_info = {
     name        = "web-sg"
     description = "web security group"
@@ -52,7 +52,7 @@ module "aws_security_group" {
 
 # Creating a security group for sql database with port 3306 
 module "db_security_group" {
-  source = "../modules/security_group"
+  source = "github.com/vpk99/DevOps_Main/Terraform_zone/aws/modules/security_group"
   security_group_info = {
     name        = "db_sg"
     description = "db security group"
