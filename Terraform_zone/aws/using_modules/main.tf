@@ -74,7 +74,6 @@ module "db_security_group" {
 
 module "instances" {
   source = "github.com/vpk99/DevOps_Main/Terraform_zone/aws/modules/ec2"
-  instace_info = {
   name = "web"
   size = "t2.micro"
   ami = "ami-04b70fa74e45c3917"
@@ -85,7 +84,7 @@ module "instances" {
   user_data_file = "install.sh"
   associate_public_ip_address = true
   type = "t2.micro"
-}
+
 }
 
 
