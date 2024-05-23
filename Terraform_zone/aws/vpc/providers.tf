@@ -13,8 +13,6 @@ terraform {
     bucket = "tterraformstatebackend"
     key    = "terraform.tfstate"
     region = "us-east-1"
-
-    # Enable state locking (recommended)
     dynamodb_table = "terraformbackend"
   }
 }
