@@ -1,3 +1,8 @@
+variable "resource_group_name" {
+  type = string
+  default = "ntier"
+}
+
 variable "network_name" {
   type        = string
   description = "This is name for virtual network"
