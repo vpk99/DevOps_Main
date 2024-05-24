@@ -1,5 +1,5 @@
 module "vnet" {
-  source       = "../modules/vnet"
+  source       = "github.com/vpk99/DevOps_Main/Terraform_zone/azure/modules/vnet"
   network_name = "ntier"
   network_cidr = ["10.0.0.0/16"]
   location     = "eastus"
@@ -8,7 +8,7 @@ module "vnet" {
 }
 
 module "nsg" {
-  source = "../modules/NSG"
+  source = "github.com/vpk99/DevOps_Main/Terraform_zone/azure/modules/NSG"
   web_nsg_rules = [{
     name                       = "openssh"
     description                = "opens 22 port"
