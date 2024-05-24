@@ -1,17 +1,21 @@
-resource "aws_instance" "this" {
-  ami                         = var.instance_info.ami
-  associate_public_ip_address = var.instance_info.associate_public_ip_address
-  instance_type               = var.instance.key_name
-  key_name                    = var.instance_info.key_name
-  vpc_security_group_ids      = [var.instance_info.security_group_id]
-  subnet_id                   = var.instance_info.subnet_id
 
-  user_data = var.instance_info.user_data ? file(var.instance_info.user_data_file) : ""
+# Creating EC2 instance
+
+resource "aws_instance" "web" {
+  ami                         = var.vm_info.ami
+  associate_public_ip_address = var.vm_info.associate_public_ip_address
+  instance_type               = var.vm_info.instance_type
+  key_name                    = var.vm_info.key_name
+  vpc_security_group_ids      = [var.vm_info.security_group_id]
+  subnet_id                   = var.vm_info.subnet_id
+
+
+  user_data = file("user_data.sh")
 
 
   tags = {
-    Name = var.instance_info.name
+    Name = "web"
   }
 
-  
+
 }

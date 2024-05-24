@@ -1,14 +1,16 @@
-variable "instance_info" {
+variable "vm_info" {
   type = object({
     name                        = string
-    size                        = string
-    ami                         = string
-    subnet_id                   = string
-    security_group_id           = string
-    key_name                    = string
-    user_data                   = bool
-    user_data_file              = string
     associate_public_ip_address = bool
-    type = string
-  }) 
+    instance_type               = string
+    key_name                    = string
+    security_group_id           = string
+    subnet_id                   = string
+    ami                         = string
+  })
+
 }
+
+
+
+    

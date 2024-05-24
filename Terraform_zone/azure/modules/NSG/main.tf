@@ -1,3 +1,6 @@
+
+
+
 # Creating network security group
 resource "azurerm_network_security_group" "web" {
   name                = "openhttpssh"
@@ -27,3 +30,6 @@ resource "azurerm_network_security_rule" "web" {
   priority                    = var.web_nsg_rules[count.index].priority
   direction                   = "Inbound"
 }
+
+
+

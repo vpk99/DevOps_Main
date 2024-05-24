@@ -1,4 +1,4 @@
-# Creating public 
+# Creating public ip 
 resource "azurerm_public_ip" "web" {
   name                = "web"
   resource_group_name = azurerm_resource_group.ntier.name

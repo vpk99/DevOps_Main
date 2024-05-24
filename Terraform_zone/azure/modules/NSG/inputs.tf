@@ -23,3 +23,11 @@ variable "resource_group_name" {
 type = string
 default = "ntier"
 }
+
+variable "Public_ip_name" {
+  type = string
+}
+
+variable "network_interface_name" {
+  type = string
+}

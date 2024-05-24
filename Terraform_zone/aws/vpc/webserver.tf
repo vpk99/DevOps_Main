@@ -16,5 +16,5 @@ resource "aws_instance" "web" {
     Name = "web"
   }
 
-  depends_on = [aws_vpc.ntier, aws_subnet.public]
+
 }
