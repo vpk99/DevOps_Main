@@ -10,12 +10,12 @@ output "private_subnets" {
   value = module.vpc.private_subnets
 }
 
-output "instace_ip" {
-  value = module.instance.public_ip
+output "instance_ips" {
+  value = [for instance in module.instance : instance.public_ip]
 }
 
-output "url" {
-  value = "http://${module.instance.public_ip}/preschool"
+output "urls" {
+  value = [for instance in module.instance : "http://${instance.public_ip}/preschool"]
 }
 
 output "security_group_id" {

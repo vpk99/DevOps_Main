@@ -73,9 +73,10 @@ module "db_security_group" {
 # Creating a ec2 instance 
 
 module "instance" {
-  source = "../modules/ec2"
+  source = "github.com/vpk99/DevOps_Main/Terraform_zone/aws/modules/ec2"
+ count = length(var.instance_name)
   vm_info = {
-    name                        = "web"
+    name                        = var.instance_name[count.index]
     associate_public_ip_address = true
     instance_type               = "t2.micro"
     key_name                    = "my_idrsa"
