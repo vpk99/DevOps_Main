@@ -10,7 +10,7 @@ resource "aws_instance" "this" {
   subnet_id                   = var.vm_info.subnet_id
 
 
-  user_data = var.vm_info[count.index].user_data ? file(var.ec2_instance_info.user_data_file) : ""
+  user_data = var.vm_info.user_data ? file(var.vm_info.user_data_file) : ""
 
 
   tags = {

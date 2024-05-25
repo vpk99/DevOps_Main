@@ -82,6 +82,10 @@ module "instance" {
     security_group_id           = module.aws_security_group.security_group_id
     subnet_id                   = module.vpc.public_subnets[0]
     ami                         = "ami-04b70fa74e45c3917"
+    user_data                   = true
+    user_data_file              = "install.sh"
+
+
   }
 }
 
