@@ -1,7 +1,7 @@
 
 # Creating EC2 instance
 
-resource "aws_instance" "web" {
+resource "aws_instance" "this" {
   ami                         = var.vm_info.ami
   associate_public_ip_address = var.vm_info.associate_public_ip_address
   instance_type               = var.vm_info.instance_type
@@ -10,11 +10,11 @@ resource "aws_instance" "web" {
   subnet_id                   = var.vm_info.subnet_id
 
 
-  user_data = file("user_data.sh")
+  user_data = var.vm_info[count.index].user_data ? file(var.ec2_instance_info.user_data_file) : ""
 
 
   tags = {
-    Name = "web"
+    Name = var.vm_info.name
   }
 
 

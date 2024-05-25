@@ -7,6 +7,8 @@ variable "vm_info" {
     security_group_id           = string
     subnet_id                   = string
     ami                         = string
+    user_data = bool
+    user_data_file = string
   })
 
 }
