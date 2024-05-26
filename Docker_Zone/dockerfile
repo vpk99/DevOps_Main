@@ -1,0 +1,50 @@
+     FROM  amazoncorretto:17-alpine3.17-jdk
+     LABEL project="learning"
+     ARG DOWNLOAD_URL="https://referenceapplicationskhaja.s3.us-west-2.amazonaws.com/spring-petclinic-3.1.0-SNAPSHOT.jar"
+     ARG GROUP="spc"
+     ARG USER="spc"
+     ARG GID=1000
+     ARG UID=1000
+     ARG HOMEDIR="/spc"
+     RUN addgroup -g ${GID} ${GROUP} \
+          && adduser -h ${HOMEDIR} -u ${UID} -G ${GROUP} -s /bin/bash -D ${USER}
+      USER ${USER}
+      ADD --chown=${USER}:${GROUP} ${DOWNLOAD_URL} &{HOMEDIR}/spring-petclinic-3.1.0-SNAPSHOT.jar
+      EXPOSE 8080
+      WORKDIR "/spc"
+      CMD ["java", "-jar", "/spring-petclinic-3.1.0-SNAPSHOT.jar"]
+
+
+
+
+FROM amazoncorretto:17-alpine3.17-jdk
+LABEL project="learning"
+ARG DOWNLOAD_URL="https://referenceapplicationskhaja.s3.us-west-2.amazonaws.com/spring-petclinic-3.1.0-SNAPSHOT.jar"
+ARG GROUP="spc"
+ARG USER="spc"
+ARG GID=1000
+ARG UID=1000
+ARG HOMEDIR="/spc"
+RUN addgroup -g ${GID} ${GROUP} \
+    && adduser -h ${HOMEDIR} -u ${UID} -G ${GROUP} -s /bin/bash -D ${USER}
+USER ${USER}
+ADD --chown=${USER}:${GROUP} ${DOWNLOAD_URL} ${HOMEDIR}/spring-petclinic-3.1.0-SNAPSHOT.jar
+EXPOSE 8080
+WORKDIR "/spc"
+CMD ["java", "-jar", "spring-petclinic-3.1.0-SNAPSHOT.jar"]
+
+
+FROM tomcat:9.0.84-jdk8-corretto
+LABEL author="khaja"
+LABEL project="learning"
+ARG DOWNLOAD_URL="https://referenceapplicationskhaja.s3.us-west-2.amazonaws.com/gameoflife.war"
+ARG USER="gol"
+ARG GROUP="gol"
+ARG UID=1000
+ARG GID=1000
+ARG HOMEDIR="/gol"
+RUN addgroup -g ${GID} ${GROUP} && adduser -h ${HOMEDIR} -u ${UID} -G ${GROUP} -s /bin/bash -D ${USER}
+USER ${USER}
+EXPOSE 8080
+ADD --chown=${USER}:${GROUP} ${DOWNLOAD_URL} /usr/local/tomcat/webapps/gameoflife.war
+WORKDIR "/gol"
