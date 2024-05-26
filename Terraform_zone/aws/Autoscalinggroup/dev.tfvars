@@ -45,3 +45,9 @@ security_group_info = {
   allow_all_egress = true
 
 }
+
+launch_template = {
+  instance_type = "t2.micro"
+  key_name      = "my_idrsa"
+  name          = "preschool-lt"
+}

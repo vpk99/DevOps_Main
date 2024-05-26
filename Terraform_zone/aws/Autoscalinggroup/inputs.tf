@@ -49,3 +49,11 @@ variable "security_group_info" {
   })
   description = "Security group info"
 }
+
+variable "launch_template" {
+  type = object({
+    name          = string
+    instance_type = string
+    key_name      = string
+  })
+}

@@ -1,5 +1,5 @@
 locals {
-  ssh = 22
+  ssh  = 22
   http = 80
-  TCP = "TCP"
+  TCP  = "TCP"
 }
