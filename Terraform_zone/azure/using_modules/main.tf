@@ -9,39 +9,58 @@ module "vnet" {
 }
 
 
+
+
 module "nsg" {
-  source                 = "../modules/NSG"
-  web_nsg_rules = [{
-    name                       = "openssh"
-    description                = "opens 22 port"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-    access                     = "Allow"
-    priority                   = 1000
-    direction                  = "Inbound"
-
-    }, {
-    name                       = "openhttp"
-    description                = "opens 22 port"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-    access                     = "Allow"
-    priority                   = 1010
-    direction                  = "Inbound"
-
-    }]
-  resource_group_name = "ntier"
+  source = "../modules/NSG"
   location = "eastus"
+  nsg_name = "web_nsg"
+  resource_group_name = "ntier"
+  public_ip_name = "web_ip"
+  web_nsg_rules = [ {
+     name                       = "openhttp"
+  description                = "This rule is for open http port"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = "80"
+  source_address_prefix      = "*"
+  destination_address_prefix = "*"
+  access                     = "Allow"
+  priority                   = 1000
+  direction                  = "Inbound"
+  },{
+   
+  name                       = "openssh"
+  description                = "This rule is for open ssh port"
+  protocol                   = "Tcp"
+  source_port_range          = "*"
+  destination_port_range     = "22"
+  source_address_prefix      = "*"
+  destination_address_prefix = "*"
+  access                     = "Allow"
+  priority                   = 1010
+  direction                  = "Inbound" 
+  } ]
 }
 
+resource "azurerm_network_interface" "web_nic" {
+  name = "webnic"
+  location = "eastus"
+  resource_group_name = "ntier"
+ip_configuration {
+  name = "web"
+  subnet_id = module.vnet.subnet_ids[0]
+  private_ip_address_allocation = "Dynamic"
+  public_ip_address_id = module.nsg.public_ip_address_id
+}
 
+depends_on = [ module.vnet, module.nsg ]
+}
 
+resource "azurerm_network_interface_security_group_association" "nic_nsgname" {
+  network_interface_id = azurerm_network_interface.web_nic.id
+  network_security_group_id = module.nsg.network_security_group_id
+}
 
 ##Creating a vm using module
 #module "vm" {

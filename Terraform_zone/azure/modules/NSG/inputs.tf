@@ -1,3 +1,21 @@
+variable "public_ip_name" {
+  type = string
+}
+
+
+
+variable "resource_group_name" {
+  type = string
+}
+
+variable "location" {
+  type = string
+}
+
+variable "nsg_name" {
+  type = string
+}
+
 variable "web_nsg_rules" {
   type = list(object({
     name                       = string
@@ -14,10 +32,3 @@ variable "web_nsg_rules" {
   }))
 }
 
-variable "resource_group_name" {
-  type = string
-}
-
-variable "location" {
-  type = string
-}
