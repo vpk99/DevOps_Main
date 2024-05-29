@@ -32,3 +32,7 @@ variable "nic_info" {
     public_ip_address_id = string
   })
 }
+
+variable "network_security_group_id" {
+  type = string
+}

@@ -27,16 +27,17 @@ web_nsg_rules = [{
   priority                   = 1010
   direction                  = "Inbound"
 }]
+
+
+
 web_vm_info = {
-  name           = "vmweb"
-  admin_username = "ubuntu"
-  vm_size        = "Standard_B1s"
-  key_path       = "/home/ubuntu/.ssh/authorized_keys"
-  key_data       = "~/.ssh/id_rsa.pub"
-  disk_type      = "Standard_LRS"
-  publisher      = "canonical"
-  offer          = "0001-com-ubuntu-server-jammy"
-  sku            = "22_04-lts-gen2"
-  version        = "latest"
+  name      = "web"
+  size      = "Standard_B1s"
+  username  = "web"
+  key_path  = "~/.ssh/id_rsa.pub"
+  publisher = "Canonical"
+  offer     = "0001-com-ubuntu-server-jammy"
+  sku       = "22_04-lts"
+  version   = "latest"
 
 }

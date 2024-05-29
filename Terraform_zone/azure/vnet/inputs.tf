@@ -61,27 +61,26 @@ variable "web_nsg_rules" {
 
 variable "web_vm_info" {
   type = object({
-    name           = string
-    admin_username = string
-    vm_size        = string
-    key_path       = string
-    key_data       = string
-    disk_type      = string
-    publisher      = string
-    offer          = string
-    sku            = string
-    version        = string
+    name      = string
+    size      = string
+    username  = string
+    key_path  = string
+    publisher = string
+    offer     = string
+    sku       = string
+    version   = string
   })
+  description = "vm machine info"
   default = {
-    name           = "vmweb"
-    admin_username = "ubuntu"
-    vm_size        = "Standard_B1s"
-    key_path       = "/home/ubuntu/.ssh/authorized_keys"
-    key_data       = "~/.ssh/id_rsa.pub"
-    disk_type      = "Standard_LRS"
-    publisher      = "canonical"
-    offer          = "0001-com-ubuntu-server-jammy"
-    sku            = "22_04-lts-gen2"
-    version        = "latest"
+    name      = "web"
+    size      = "Standard_B1s"
+    username  = "web"
+    key_path  = "~/.ssh/id_rsa.pub"
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts"
+    version   = "latest"
   }
+
 }
+

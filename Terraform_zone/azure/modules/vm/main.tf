@@ -15,8 +15,13 @@ resource "azurerm_network_interface" "webnic" {
 }
 
 
+#Associate network interface to network security group
 
+resource "azurerm_network_interface_security_group_association" "nic_nsg" {
+  network_interface_id      = azurerm_network_interface.webnic.id
+  network_security_group_id = var.network_security_group_id
 
+}
 
 # Creating Virtual Machine
 resource "azurerm_virtual_machine" "web" {

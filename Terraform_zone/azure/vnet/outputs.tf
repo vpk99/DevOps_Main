@@ -1,9 +1,9 @@
 output "web_ip" {
-  value = azurerm_public_ip.web.ip_address
+  value = azurerm_linux_virtual_machine.web.id
 }
 
 output "web_url" {
-  value = "http://${azurerm_public_ip.web.ip_address}/preschool"
+  value = "http://${azurerm_linux_virtual_machine.web.id}/preschool"
 }
 
 output "subnet_ids" {

@@ -68,8 +68,8 @@ module "vm" {
     subnet_id            = module.vnet.subnet_ids[0]
     public_ip_address_id = module.nsg.public_ip_address_id
   }
-
-  resource_group_name = "ntier"
-  location            = "eastus"
+  network_security_group_id = module.nsg.network_security_group_id
+  resource_group_name       = "ntier"
+  location                  = "eastus"
 }
 
