@@ -1,21 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Creating Virtual Machine
 resource "azurerm_virtual_machine" "web" {
   name                = "web"

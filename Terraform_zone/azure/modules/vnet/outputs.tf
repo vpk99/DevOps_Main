@@ -1,3 +1,3 @@
 output "subnet_ids" {
-  value = [for subnet in vnet.subnet : subnet.id]
+  value = azurerm_subnet.subnets[*].id
 }

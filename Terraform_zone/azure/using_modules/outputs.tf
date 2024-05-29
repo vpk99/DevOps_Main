@@ -1,3 +1,7 @@
-output "subnet_ids" {
-  value = [for subnet in azurerm_subnet.subnets : subnet.id]
+output "subnet_id" {
+  value = module.vnet.subnet_ids
+}
+
+output "public_ip_address_id" {
+  value = module.nsg.public_ip_address_id
 }
