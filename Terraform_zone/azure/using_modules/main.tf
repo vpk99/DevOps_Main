@@ -41,6 +41,8 @@ module "nsg" {
     priority                   = 1010
     direction                  = "Inbound"
   }]
+
+  depends_on = [ module.vnet ]
 }
 
 resource "azurerm_network_interface" "web_nic" {

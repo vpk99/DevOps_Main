@@ -1,6 +1,6 @@
 # Creating Virtual Machine
 resource "azurerm_virtual_machine" "web" {
-  name                = "web"
+  name                = var.network_info.name
   resource_group_name = var.resource_group_name
   location            = var.location
   vm_size             = var.web_vm_info.vm_size
