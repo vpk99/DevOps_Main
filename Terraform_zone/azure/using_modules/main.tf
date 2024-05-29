@@ -1,5 +1,5 @@
 module "vnet" {
-  source              = "../modules/vnet"
+  source              = "github.com/vpk99/DevOps_Main/Terraform_zone/azure/modules/vnet"
   network_name        = "ntier-primary"
   network_cidr        = ["10.0.0.0/16"]
   location            = "eastus"
@@ -12,7 +12,7 @@ module "vnet" {
 
 
 module "nsg" {
-  source              = "../modules/NSG"
+  source              = "github.com/vpk99/DevOps_Main/Terraform_zone/azure/modules/NSG"
   location            = "eastus"
   nsg_name            = "web_nsg"
   resource_group_name = "ntier"
