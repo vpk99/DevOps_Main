@@ -10,15 +10,25 @@ variable "web_vm_info" {
     offer          = string
     sku            = string
     version        = string
+    custom_data = bool
+    custom_data_file = string
   })
 }
 
 variable "resource_group_name" {
   type = string
-  default = "ntier"
+  
 }
 
 variable "location" {
   type = string
-  default = "eastus"
+
+}
+
+variable "nic_info" {
+  type = object({
+    name = string
+    subnet_id = string
+    public_ip_address_id = string
+  })
 }

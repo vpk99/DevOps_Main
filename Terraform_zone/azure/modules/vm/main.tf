@@ -1,6 +1,26 @@
+# Creating network interface 
+
+resource "azurerm_network_interface" "webnic" {
+  name                = "webnic"
+  location            = var.location
+  resource_group_name = var.resource_group_name
+  ip_configuration {
+    name                          = var.nic_info.name
+    subnet_id                     = var.nic_info.subnet_id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = var.nic_info.public_ip_address_id
+  }
+
+
+}
+
+
+
+
+
 # Creating Virtual Machine
 resource "azurerm_virtual_machine" "web" {
-  name                = var.network_info.name
+  name                = var.web_vm_info.name
   resource_group_name = var.resource_group_name
   location            = var.location
   vm_size             = var.web_vm_info.vm_size
@@ -8,14 +28,14 @@ resource "azurerm_virtual_machine" "web" {
   os_profile {
     computer_name  = var.web_vm_info.name
     admin_username = var.web_vm_info.admin_username
-    custom_data    = file("user_data.sh")
+    custom_data    = var.web_vm_info.custom_data ? file(var.web_vm_info.custom_data_file): ""
   }
 
   os_profile_linux_config {
     disable_password_authentication = "true"
     ssh_keys {
       path     = var.web_vm_info.key_path
-      key_data = file(var.web_vm_info.key_data)
+      key_data = file(var.web_vm_info.key_data) 
     }
 
   }
@@ -36,7 +56,6 @@ resource "azurerm_virtual_machine" "web" {
   }
 
 
-  depends_on = [azurerm_resource_group.ntier,
-  azurerm_network_security_group.web]
+  
 }
 
