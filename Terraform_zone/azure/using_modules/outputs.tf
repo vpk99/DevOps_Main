@@ -7,9 +7,10 @@ output "public_ip_address_id" {
 }
 
 
-output "public_ip" {
-  value = module.vm.vM_info
+output "web_ip" {
+  value = module.vm.web_ip
 }
+
 output "url" {
-  value = "http://${module.vm.vM_info}}/preschool"
+  value = "http://${module.vm.web_ip}/preschool"
 }

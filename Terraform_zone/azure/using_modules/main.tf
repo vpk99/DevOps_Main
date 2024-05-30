@@ -48,28 +48,25 @@ module "nsg" {
 
 #Creating a vm using module
 module "vm" {
-  source = "../modules/vm"
-  web_vm_info = {
-    name             = "vmweb"
-    admin_username   = "ubuntu"
-    vm_size          = "Standard_B1s"
-    key_path         = "/home/ubuntu/.ssh/authorized_keys"
-    key_data         = "~/.ssh/id_rsa.pub"
-    disk_type        = "Standard_LRS"
-    publisher        = "canonical"
-    offer            = "0001-com-ubuntu-server-jammy"
-    sku              = "22_04-lts-gen2"
-    version          = "latest"
-    custom_data      = true
-    custom_data_file = "install.sh"
-  }
+  source                    = "../modules/vm"
+  resource_group_name       = "ntier"
+  network_security_group_id = module.nsg.network_security_group_id
+  location                  = "eastus"
+  file_name                 = "install.sh"
   nic_info = {
-    name                 = "web_ip"
+    name                 = "web"
     subnet_id            = module.vnet.subnet_ids[0]
     public_ip_address_id = module.nsg.public_ip_address_id
   }
-  network_security_group_id = module.nsg.network_security_group_id
-  resource_group_name       = "ntier"
-  location                  = "eastus"
-}
+  web_vm_info = {
+    name      = "web"
+    size      = "Standard_B1s"
+    username  = "hp"
+    key_path  = "~/.ssh/id_rsa.pub"
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts"
+    version   = "latest"
+  }
 
+}
