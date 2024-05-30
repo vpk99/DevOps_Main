@@ -1,6 +1,7 @@
 FROM amazoncorretto:17
 LABEL author="vinayak"
 LABEL Env="learning"
-RUN curl -O https://khajareferenceapps.s3.ap-south-1.amazonaws.com/springpetclinic-3.2.0-SNAPSHOT.jar
+ARG DOWNLOAD_URL="https://khajareferenceapps.s3.ap-south-1.amazonaws.com/spring-petclinic-3.2.0-SNAPSHOT.jar"
+RUN curl -O ${DOWNLOAD_URL}
 EXPOSE 8080
-CMD [ "java", "-jar", "springpetclinic-3.2.0-SNAPSHOT.jar" ]
+CMD [ "java", "-jar", "spring-petclinic-3.2.0-SNAPSHOT.jar" ]
