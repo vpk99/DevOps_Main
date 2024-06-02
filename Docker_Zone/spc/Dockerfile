@@ -1,4 +1,4 @@
-FROM amazoncorretto:17
+FROM openjdk:17
 LABEL author="vinayak"
 LABEL project="learning"
 ARG GROUP="spc"
