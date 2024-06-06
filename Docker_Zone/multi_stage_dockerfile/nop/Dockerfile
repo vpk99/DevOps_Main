@@ -1,10 +1,14 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+LABEL author="vinayk"
+LABEL description="Builds the nopCommerce application from source code"
 RUN git clone https://github.com/vpk99/nopCommerce-docker.git
 RUN mkdir published
 RUN cd nopCommerce-docker 
 RUN dotnet publish  -c Release -o published/  nopCommerce-docker/src/Presentation/Nop.Web/Nop.Web.csproj
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
+LABEL author="vinayak"
+LABEL description="Runs the nopCommerce application"
 RUN useradd -d /app -m -s /bin/bash nop
 USER nop
 WORKDIR /nop
