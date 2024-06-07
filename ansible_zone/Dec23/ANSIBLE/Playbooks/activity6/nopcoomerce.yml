@@ -1,0 +1,85 @@
+---
+- name: install nopcommerce on ubuntu
+  hosts: appserver
+  become: yes
+  tasks:
+    - name: get the all shell files
+      ansible.builtin.command: "{{ microsoft_package }}"
+    - name: get the all shell files
+      ansible.builtin.command: sudo dpkg -i packages-microsoft-prod.deb 
+    - name: remove package
+      ansible.builtin.command: rm packages-microsoft-prod.deb 
+    - name: Install dotnet_packages
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        update_cache: yes
+        state: present
+    - ansible.builtin.debug:
+        msg: " dotnet packages are installed "  
+    - name: add user 
+      ansible.builtin.user:
+        name: "{{ user }}"
+        state: present
+    - name: add group
+      ansible.builtin.group:
+        name: "{{ group }}"
+        state: present
+    - ansible.builtin.debug:
+        msg: user and group created
+    - name: create a directory for nopcommerce
+      ansible.builtin.file:
+        path: /var/nopCommerce
+        state: directory
+        mode: '0755'
+        recurse: yes
+    - ansible.builtin.debug:
+        msg: /var/nopCommerce directory created
+    - name: Change directory
+      ansible.builtin.shell:
+        cmd: "cd /var/nopCommerce"
+    - name: Download and extract nopcommerce
+      ansible.builtin.get_url:
+        url: "{{ nop_url }}"
+        dest: /tmp/nopCommerce_4.60.6_NoSource_linux_x64.zip
+    - ansible.builtin.unarchive:
+        src: /tmp/nopCommerce_4.60.6_NoSource_linux_x64.zip
+        dest: /var/nopCommerce
+        remote_src: yes
+    - ansible.builtin.debug:
+        msg: "nopCommerce download and extracted"
+    - name: create couple directories 
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - /var/nopCommerce/bin
+        - /var/nopCommerce/logs
+    - ansible.builtin.debug: 
+        msg: "bin and logs files created succesfully"
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /var/nopCommerce
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: '0755'
+    - ansible.builtin.debug:
+        msg: "group and file ownership changed"
+    - name: create nopCommerce service file
+      ansible.builtin.template:
+        src: templates/nop_service.j2
+        dest: /etc/systemd/system/nopCommerce.service
+        remote_src: yes
+      notify: startnopcommerce.service
+    - ansible.builtin.debug:
+        msg: "nopcommerce service file created"
+  handlers:
+    - name: startnopcommerce.service
+      service:
+        name: nopCommerce
+        enabled: yes 
+        state: started
+    
+
+      
+      
+        

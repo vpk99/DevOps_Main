@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: nginx-delpoy
+spec:
+  minReadySeconds: 30
+  progressDeadlineSeconds: 600
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 40%
+      maxUnavailable: 40%
+  template:
+    metadata:
+      namespace: dev
+      labels:
+        app: nginx
+        version: "v1.0"
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          resources:
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          ports: 
+            - containerPort: 8080
+  

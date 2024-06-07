@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: trail1-rs
+  labels:
+    name: trail1
+spec:
+  minReadySeconds: 10
+  replicas: 3
+  selector:
+    matchLabels:
+      app: alpine
+  template:
+    metadata:
+      labels:
+        app: alpine
+        env: dev
+        version: '1.0'
+    spec:
+      containers:
+        - name: alpine
+          image: alpine
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+
+
+
+

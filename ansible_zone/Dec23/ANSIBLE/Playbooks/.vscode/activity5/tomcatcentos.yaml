@@ -1,0 +1,100 @@
+---
+- name: Install tomcat on centos
+  hosts: appserver
+  tasks:
+    - name: fail for unsupported os
+      ansible.builtin.fail:
+        msg: "This playbook is designed only for ubuntu os"
+      when: ansible_facts['distribution'] != 'Ubuntu'
+    - name: update package and install java package
+      ansible.builtin.dnf:
+        name: "{{ java_package_name }}"
+        update_cache: yes
+        state: present
+      become: yes
+    - ansible.bulitin.debug:
+        msg: package is updated and installed java packge {{ java_package_name }}
+    - name: create tomcat group
+      ansible.builtin.group:
+        name: "{{ group }}"
+        state: present
+      become: yes
+    - ansible.builtin.debug:
+        msg: tomcat group "{{ group }}"" created  
+    - name: create tomcat user 
+      ansible.builtin.user:
+        create_home: yes
+        name: "{{ user }}"
+        group: "{{ group }}"
+        home: "{{ home_dir }}"
+        shell: "{{ user_shell }}"
+        system: yes
+        state: present
+      become: yes
+    - name: install wget package
+      ansible.builtin.dnf:
+        name: "{{ package }}"
+        state: present
+    - ansible.builtin.debug:
+        msg: "{{ package }}" installed
+    - name: changing group and file ownership of tomcat
+      ansible.builtin.file:
+        path: "{{ path }}"
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: '744'
+      become: yes
+    - name: changing ownership for file
+      ansible.builtin.file:
+        path: "{{ path }}"
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        recurse: yes
+        state: directory
+      loop: "{{ tomcat_dirs }}"
+      become: yes
+    - ansible.builtin.debug:
+        msg: change group for "{{ user }}" "{{ group }}"" and change ownership for "{{tomcat_dirs}}"
+    - name: download tomcat
+      ansible.builtin.get_url: 
+        url: "{{ tomcat_url }}"
+        dest: /tmp/apache-tomcat-8.5.37.tar.gzsudo
+      when: not tomcat_directory.stat.exists
+      become: yes
+    - ansible.builtin.unarchive:
+        src: /tmp/apache-tomcat-8.5.37.tar.gzsudo
+        dest: "{{ home_dir }}"
+      when: not tomcat_directory.stat.exists
+      become: yes
+    - ansible.builtin.debug:
+        msg: tomcat downloaded and extracted to the home directory
+    - name: set up tomcat systemd unit file
+      copy:
+        src: tomcat.service
+        dest: /etc/systemd/system/tomcat.service
+    - ansible.builtin.debug
+        msg: sucessfully setup tomcat.service file
+      notify:
+        - demon-reload tomcat
+        - enable and start tomcat
+  handlers:
+    - name: demon-reload tomcat 
+      service: 
+        name: "{{user}}"
+        daemon_reload: true
+    - name: enable and start tomcat
+      service: 
+        name: "{{ user }}"
+        enabled: yes
+        state: started
+
+ 
+
+        
+
+
+        
+    
+
+
+

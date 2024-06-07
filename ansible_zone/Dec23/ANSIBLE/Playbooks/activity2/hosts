@@ -1,0 +1,5 @@
+[Ubuntu]
+172.31.41.117 package_name= apache2
+
+[RedHat]
+172.208.10.99 package_name= httpd

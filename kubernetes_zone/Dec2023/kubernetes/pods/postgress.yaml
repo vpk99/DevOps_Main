@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+   name: postgress
+spec:
+   containers:
+     - name: postgress
+       image: postgress:15-alpine
+       env:
+         - name: POSTGRES_PASSWORD
+           value: admin123
+         - name: POSTGRES_USER
+           value: nop
+         - name: POSTGRES_DB
+           value: emp
+       resources:
+           limits:
+             cpu: 1000m
+             memory: 1Gi
+
+
+       
+           
+
+
+

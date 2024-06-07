@@ -1,0 +1,9 @@
+---
+- name: update package and install java
+  ansible.builtin.yum:
+    name: openjdk-11-jdk
+    state: present 
+  when: ansible_facts['os_family'] == RedHat
+  ansible.builtin.debug:
+    msg: java is installed using openjdk-11-jdk package
+    

@@ -1,0 +1,14 @@
+--- 
+name: Install tree,git and net-tools on ubuntu
+hosts: ubuntu
+become: yes
+tasks:
+  - name: Install tree, git, and net-tools on all nodes 
+    package:
+      name: "{{ packages}}"
+      update_cache: yes
+      state: present
+    when: ansible_facts ['']
+      
+      
+      

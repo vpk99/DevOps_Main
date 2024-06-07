@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: practice-deploy
+spec:
+  minReadySeconds: 5
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tomcat
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels: 
+        app: tomcat
+    spec:
+      containers:
+        - name: tomcat
+          image: tomcat:jdk11
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /
+          resources:
+            limits: 
+              cpu: 1000m
+              memory: 512Mi
+
+
+            
+
+
+
+
+  
+ 

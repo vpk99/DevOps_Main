@@ -1,0 +1,22 @@
+---
+apiVersion: v1 
+kind: Pod
+metadata:
+  name: toleration
+  labels:
+    name: toleration
+spec:
+  tolerations:
+    - key: team
+      operator: equal
+      effect: NoSchedule
+      value: devops
+  containers:
+  - name: toleration
+    image: nginx
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80

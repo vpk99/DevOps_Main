@@ -1,0 +1,18 @@
+[Service]
+Type=forking
+
+User=tomcat
+Group=tomcat
+User="{{ user }}"
+Group="{{ group }}"
+
+
+Environment="CATALINA_HOME={{ home_dir_after_extract }}"
+Environment="CATALINA_BASE={{ home_dir_after_extract }}"
+Environment="CATALINA_PID={{ home_dir_after_extract }}/temp/tomcat.pid"
+Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+ExecStart={{ home_dir_after_extract }}/bin/startup.sh
+ExecStop={{ home_dir_after_extract }}/bin/shutdown.sh
+
+[Install]
+WantedBy=multi-user.target

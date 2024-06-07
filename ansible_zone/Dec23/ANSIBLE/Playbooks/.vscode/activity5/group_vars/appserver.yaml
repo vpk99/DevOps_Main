@@ -1,0 +1,13 @@
+java_package_name: java-1.7.0-openjdk-devel
+package: wget
+user: tomcat
+group: tomcat
+home_dir: /opt/tomcat
+user_shell: /bin/nologin
+tomcat_url: wget https://www-eu.apache.org/dist/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.tar.gzsudo 
+path: /opt/tomcat
+tomcat_dirs: 
+   - /opt/tomcat/webapps
+   - /opt/tomcat/work
+   - /opt/tomcat/temp
+   - /opt/tomcat/logs

@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: nginx-rs
+  labels:
+    app: nginx
+spec:
+  minReadySeconds: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+     metadata:
+     labels:
+     app: nginx
+  spec:
+     containers:
+      - name: nginx
+        image: nginx
+        containerPort: 80
+        resources:
+           limits:
+            cpu: 1000m
+            memory: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: nginx-service
+  labels: 
+    app: nginx
+spec:
+  selector:
+    env: dev
+  ports:
+    - name: nginx-port
+      port: 80
+      targetPort: 80
+

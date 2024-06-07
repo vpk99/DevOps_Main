@@ -1,0 +1,8 @@
+---
+- name: update package and install java
+  ansible.builtin.apt:
+    name: openjdk-11-jdk
+    state: present
+  when: ansible_facts['os_family'] == Debian
+  ansible.builtin.debug:
+    msg: java installed using openjdk-11-jdk package

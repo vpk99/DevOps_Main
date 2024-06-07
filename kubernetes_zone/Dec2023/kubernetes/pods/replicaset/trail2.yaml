@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  name: trail2-rs
+  labels:
+    app: spc
+spec: 
+  minReadySeconds: 1
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spc
+  template:
+    metadata:
+      labels: 
+        app: spc
+        env: dev
+        version: v3.4.0
+    spec:
+      containers: 
+        - name: spc
+          image:
+          ports:
+            - containerPort: 
+

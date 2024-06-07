@@ -1,0 +1,7 @@
+packages: 
+  - dotnet-sdk-8.0
+  - unzip
+nop_url: https://github.com/nopSolutions/nopCommerce/releases/download/release-4.60.6/nopCommerce_4.60.6_NoSource_linux_x64.zip
+microsoft_package: wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+user: nop
+group: nop

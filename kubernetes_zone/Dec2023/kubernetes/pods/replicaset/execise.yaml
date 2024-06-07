@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata: 
+  labels:
+    Activity: Exercise
+spec:
+  minReadySeconds: 1
+  replicas: 3
+  selector: 
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers: 
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+          args:
+            - sleep
+            - 10m
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 0.5Gi
+          
+

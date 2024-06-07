@@ -1,0 +1,38 @@
+---
+- name: Install lamp on ubuntu
+  become: yes
+  hosts: webserver
+  tasks:
+    - name: fail for unsupported os
+      ansible.builtin.fail:
+        msg: "This ansible playbook designed only for ubuntu os"
+      when: ansible_facts ['distribution'] != 'Ubuntu'
+    - name: update package and install apache
+      ansible.builtin.apt:
+        name: "{{ package }}"
+        update_cache: yes
+        state: present
+      notify:
+        - enable and start apache
+    - name: install php packages 
+      ansible.builtin.apt:
+        name: "{{ php_packages }}"
+        state: present
+      notify:
+        - restart apache
+    - name: copy info.php
+      copy:
+        src: info.php
+        dest: /var/www/html/info.php
+      notify: 
+        - restart apache
+  handlers:
+    - name: enable and start apache
+      service:
+        name: "{{ package }}"
+        enabled: yes
+        state: started
+    - name: restart apache
+      service:
+        name: "{{ package }}"
+        state: restarted

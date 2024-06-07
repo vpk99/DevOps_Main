@@ -1,0 +1,14 @@
+---
+- name: Install httpd
+  become: yes
+  hosts: all
+  tasks:
+    - name: install httpd
+      package:
+        name: "{{ package_name }}"
+        state: present
+    - name: enable and start apache2 service
+      ansible.builtin.service:
+        name: "{{ package_name }}"
+        enabled: yes
+        state: started
