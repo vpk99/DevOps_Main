@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: spc
+  labels:
+    app: spc
+spec:
+  containers:
+    - name: spc1
+      image: khotvp/spc:1
+      ports:
+        - containerPort: 8080
+          protocol: TCP
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "256Mi"
+        requests:
+          cpu: "250m"
+          memory: "64Mi"
+  
