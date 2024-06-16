@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: spc-rs
+  labels:
+    env: dev
+    app: spc
+spec:
+  minReadySeconds: 25
+  replicas: 3
+  selector:
+    matchLabels:
+      app: spc
+  template:
+    metadata:
+      labels:
+        app: spc
+        env: dev
+    spec:
+      restartPolicy: OnFailure
+      containers: 
+        - name: spc
+          image: khotvp/spc:1
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+              memory: o.5Gi
+
+
+
