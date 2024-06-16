@@ -18,7 +18,6 @@ spec:
         app: spc
         env: dev
     spec:
-      restartPolicy: OnFailure
       containers: 
         - name: spc
           image: khotvp/spc:1.1
