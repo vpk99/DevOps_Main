@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: trail-cj
+spec:
+  schedule: " * * * * * "
+  jobTemplate:
+    metadata:
+      name: trail-job
+    spec:
+      template:
+        metadata:
+         name: trail-pod
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: Alpine
+              image: alpine
+              args:
+                - sleep
+                - 30s
+
+          
+      
+
+
