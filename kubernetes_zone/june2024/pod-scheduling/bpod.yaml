@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bpod
+  labels:
+    name: bpod
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "128Mi"
