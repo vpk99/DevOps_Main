@@ -5,6 +5,14 @@ metadata:
   labels:
     app: db
 spec:
+  volumes:
+    - name: cm-vol
+      configMap:
+          name: mysql-cm
+    - name: secret-vol
+      secret:
+        secretName: mysql-secret
+      
   containers:
     - name: mysql
       image: mysql:8.0-debian
@@ -35,3 +43,15 @@ spec:
             configMapKeyRef:
               name: mysql-cm
               key: password
+      volumeMounts:
+        - name: cm-vol
+          mountPath: /mnt
+        - name: secret-vol
+          mountPath: /secret
+
+
+  
+
+
+
+
