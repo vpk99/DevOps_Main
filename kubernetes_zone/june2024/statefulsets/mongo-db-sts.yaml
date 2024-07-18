@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo-db-sts
+spec:
+  minReadySeconds: 10
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mongo-db
+  serviceName: mongo-svc
+  template:
+    metadata:
+      labels:
+        app: mongo-db
+        version: v1.0
+    spec:
+      containers:
+        - name: db
+          image: mongo:5.0.24
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: admin
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: admin@123
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: data
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        resources:
+          requests:
+            storage: 4Gi
+        storageClassName: gp2
+        accessModes:
+          - ReadWriteOnce
+
+
+      
+    
+    
+      
+    
+
+  
+    
+      
+
+
+
+
+            
+
+
+      
+
+
+
+

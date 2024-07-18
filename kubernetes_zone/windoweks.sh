@@ -16,7 +16,7 @@ eksctl version
 
 # Use this command for create eks cluster 
  
-eksctl create cluster --name my-eks-cluster --region us-east-1 --version 1.24 --nodegroup-name ng-1 --node-type t2.medium --nodes 1 --nodes-min 1 --nodes-max 5 --managed
+eksctl create cluster --name my-eks-cluster --region us-east-1 --version 1.24 --nodegroup-name ng-1 --node-type t2.medium --nodes 2 --nodes-min 1 --nodes-max 5 --managed
 
 # For deleting cluster 
 
