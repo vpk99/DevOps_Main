@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exe-deploy
+spec:
+  minReadySeconds: 10
+  replicas: 4
+  selector:
+    matchLabels:
+      app: http  
+  template:
+    metadata:
+      labels:
+        app: http
+    spec:
+      volumes:
+        - name: http-vol
+          emptyDir: {}
+      containers:
+        - name: httpd-pod
+          image: httpd
+          ports:
+            - containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 1
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 1  
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+          volumeMounts:
+            - name: http-vol
+              mountPath: /mnt
+
+
+
+
+
+            
+
+
