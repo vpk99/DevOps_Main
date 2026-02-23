@@ -1,4 +1,4 @@
-# Creating EC2 instance
+ # Creating EC2 instance
 
 resource "aws_instance" "web" {
   ami                         = var.ami_id
