@@ -1,11 +1,12 @@
 variable "role_name" {
   type = string
+  description = "role for eks cluster"
   default = "eks_cluster_role"
 }
 
 variable "cluster_name" {
   type = string
-  default = "my-eks-cluster"
+  default = "main"
 }
 
 variable "node_group" {
