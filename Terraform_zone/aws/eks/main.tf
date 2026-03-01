@@ -1,58 +1,3 @@
-#creating_vpc
-
-module "vpc" {
-    source = "../modules/vpc"
-    network_info = {
-    name = "primary-network"
-    cidr = "10.0.0.0/16"
-  }
-  public_subnets = [{
-    name       = "web"
-    az         = "us-east-1a"
-    cidr_block = "10.0.0.0/24"
-  }]
-  private_subnets = [{
-    name       = "data1"
-    az         = "us-east-1b"
-    cidr_block = "10.0.1.0/24"
-    }, {
-    name       = "data2"
-    az         = "us-east-1c"
-    cidr_block = "10.0.2.0/24"
-  }]
-  
-}
-
-#Creating security group
-
-module "security_group" {
-  source = "../modules/security_group"
-security_group_info = {
-    name        = "web-sg"
-    description = "web security group"
-    vpc_id      = module.vpc.vpc_id
-    inbound_rules = [{
-      cidr        = "0.0.0.0/0"
-      from_port   = 80
-      ip_protocol = "tcp"
-      to_port     = 80
-      description = "open http"
-      }, {
-      cidr        = "0.0.0.0/0"
-      from_port   = 22
-      ip_protocol = "tcp"
-      to_port     = 22
-      description = "open ssh"
-    }]
-    outbound_rules   = []
-    allow_all_egress = true
-  }
-  depends_on = [module.vpc]
-
-}
-
-
-
 # Creating IAM Role for eks cluster
 
 resource "aws_iam_role" "eks_cluster_role" {
@@ -92,7 +37,7 @@ resource "aws_eks_cluster" "eks_cluster" {
   name = "project_eks_cluster"
   role_arn = aws_iam_role.eks_cluster_role.arn
   vpc_config {
-    subnet_ids = module.vpc.public_subnets.id
+    subnet_ids = module.vpc.private_subnets.id
   }
 
   depends_on = [ aws_iam_role_policy_attachment.attach_policy_for_eks ]
@@ -122,47 +67,35 @@ resource "aws_iam_role" "worker_node_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "worker_node_policy" {
+ for_each = toset([
+  "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+  "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+  "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+])
   role = aws_iam_role.worker_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
- 
- depends_on = [ aws_iam_role.worker_node_role ]
+  policy_arn = each.value
 
 }
 
-resource "aws_iam_role_policy_attachment" "cni" {
-  role = aws_iam_role.worker_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 
-  depends_on = [ aws_iam_role.worker_node_role ]
-}
-
-resource "aws_iam_role_policy_attachment" "ecr" {
-  role = aws_iam_role.worker_node_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-
-  depends_on = [ aws_iam_role.worker_node_role ]
-}
 
 # create NOde group
 
 resource "aws_eks_node_group" "name" {
+  for_each = var.node_group
   cluster_name = aws_eks_cluster.eks_cluster.name
-  node_group_name = "project_node_group"
+  node_group_name = each.key
   node_role_arn = aws_iam_role.worker_node_role.arn
-  subnet_ids = module.vpc.public_subnets.id
+  subnet_ids = module.vpc.private_subnets.id
   scaling_config {
-    desired_size = 1
-    max_size     = 2
-    min_size     = 1
+    desired_size = each.value.scaling_info.desired_size
+    max_size     = each.value.scalinf_info.max_size
+    min_size     = each.value.scaling_info.min_size
   }
-  instance_types = ["t2.medium"]
+  instance_types = each.value.instance_type
+  capacity_type = each.value.capacity_type
 
-  depends_on = [ module.vpc, aws_iam_role.eks_cluster_role, 
-  aws_eks_cluster.eks_cluster, 
-  aws_iam_role.worker_node_role, 
-  aws_iam_role_policy_attachment.attach_policy_for_eks
-  ,aws_iam_role_policy_attachment.cni,
-  aws_iam_role_policy_attachment.ecr,
+  depends_on = [ aws_iam_role_policy_attachment.worker_node_policy
   ]
 }
 
