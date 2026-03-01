@@ -1,11 +1,9 @@
-output "vpc_id" {
-  value = aws_vpc.ntier.id
+output "cluster_endpoint" {
+  description = "EKS cluster endpoint"
+  value       = aws_eks_cluster.main.endpoint
 }
 
-output "public_subnets" {
-  value = aws_subnet.public.*.id
-}
-
-output "private_subnets" {
-  value = aws_subnet.private.*.id
+output "cluster_name" {
+  description = "EKS cluster name"
+  value       = aws_eks_cluster.main.name
 }
