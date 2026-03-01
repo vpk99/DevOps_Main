@@ -34,7 +34,7 @@ depends_on = [ aws_iam_role.eks_cluster_role ]
 # Create EKS cluster
 
 resource "aws_eks_cluster" "eks_cluster" {
-  name = "main"
+  name = var.cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
   vpc_config {
     subnet_ids = module.vpc.private_subnets.id
