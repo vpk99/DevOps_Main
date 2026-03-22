@@ -10,4 +10,3 @@ output "public_ip" {
 output "instance_information" {
   value = aws_instance.this
 }
-
