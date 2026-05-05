@@ -67,9 +67,10 @@ def get_latest_video(channel_id, api_key):
 def send_email(title, video_id):
 
     api_url = os.environ.get("API_URL")
+    token = os.environ.get("APPROVAL_TOKEN")
 
-    approve_link = f"{api_url}/approve?video_id={video_id}"
-    reject_link  = f"{api_url}/reject?video_id={video_id}"
+    approve_link = f"{api_url}/approve?video_id={video_id}&token={token}"
+    reject_link  = f"{api_url}/reject?video_id={video_id}&token={token}"
 
     body = f"""
 Hi,
@@ -104,29 +105,41 @@ def lambda_handler(event, context):
     print("Event:", event)
 
     # ===============================
-    # 🔥 PART 1 — Handle API requests
+    # 🔐 PART 1 — Handle API requests
     # ===============================
     raw_path = event.get("rawPath")
     params = event.get("queryStringParameters") or {}
 
     video_id = params.get("video_id")
+    token = params.get("token")
 
-    if raw_path == "/approve":
-        print("Approved video:", video_id)
-        return {
-            "statusCode": 200,
-            "body": "Approved!"
-        }
+    expected_token = os.environ.get("APPROVAL_TOKEN")
 
-    elif raw_path == "/reject":
-        print("Rejected video:", video_id)
-        return {
-            "statusCode": 200,
-            "body": "Rejected!"
-        }
+    # 🔐 Token validation
+    if raw_path in ["/approve", "/reject"]:
+        if token != expected_token:
+            print("Unauthorized access attempt")
+            return {
+                "statusCode": 403,
+                "body": "Unauthorized"
+            }
+
+        if raw_path == "/approve":
+            print("Approved video:", video_id)
+            return {
+                "statusCode": 200,
+                "body": "Approved!"
+            }
+
+        elif raw_path == "/reject":
+            print("Rejected video:", video_id)
+            return {
+                "statusCode": 200,
+                "body": "Rejected!"
+            }
 
     # =====================================
-    # 🔁 PART 2 — Normal execution
+    # 🔁 PART 2 — Normal scheduled execution
     # =====================================
 
     print("Lambda started")
