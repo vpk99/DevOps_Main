@@ -41,7 +41,14 @@ def get_latest_video(channel_id, api_key):
 
     response = requests.get(url, params=params)
 
-    print("YouTube API Status:", response.status_code)
+    print("=== YOUTUBE API DEBUG ===")
+    print("Status Code:", response.status_code)
+    print("Full Response:", response.text)
+    print("========================")
+
+    if response.status_code != 200:
+        print("API call failed")
+        return None, None
 
     data = response.json()
 
@@ -119,7 +126,7 @@ def lambda_handler(event, context):
         }
 
     # =====================================
-    # 🔁 PART 2 — Normal scheduled execution
+    # 🔁 PART 2 — Normal execution
     # =====================================
 
     print("Lambda started")
@@ -127,12 +134,16 @@ def lambda_handler(event, context):
     channel_id = os.environ.get("CHANNEL_ID")
     api_key = os.environ.get("YOUTUBE_API_KEY")
 
+    print("CHANNEL_ID:", channel_id)
+    print("API_KEY exists:", bool(api_key))
+
     if not channel_id or not api_key:
-        raise Exception("CHANNEL_ID or API_KEY not set")
+        raise Exception("Missing CHANNEL_ID or YOUTUBE_API_KEY")
 
     title, video_id = get_latest_video(channel_id, api_key)
 
     if not video_id:
+        print("No valid video returned")
         return {"statusCode": 200}
 
     print("Latest Video:", title)
@@ -146,10 +157,7 @@ def lambda_handler(event, context):
 
     print("New video found!")
 
-    # Send approval email
     send_email(title, video_id)
-
-    # Save video ID
     save_last_video(video_id)
 
     return {
