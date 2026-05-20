@@ -23,7 +23,7 @@ spec:
           - name: certs-vol
             mountPath: "/certs"
             readOnly: true
-          - name: aut-vol
+          - name: auth-vol
             mountPath: "/auth"
             readOnly: true
          env:
